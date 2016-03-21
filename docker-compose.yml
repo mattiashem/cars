@@ -1,0 +1,15 @@
+web1:
+  build: web
+  links:
+    - db
+  ports:
+    - "5000"
+lb:
+  build: lb
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - web1
+db:
+  image: mongo
