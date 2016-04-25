@@ -3,13 +3,15 @@ web1:
   links:
     - db
   ports:
-    - "5000"
-lb:
-  build: lb
-  ports:
-    - "80:80"
-    - "443:443"
-  links:
-    - web1
+    - "5000:5000"
+  volumes:
+   - "./web/code:/code"
+#lb:
+#  build: lb
+#  ports:
+#    - "80:80"
+#    - "443:443"
+#  links:
+#    - web1
 db:
   image: mongo

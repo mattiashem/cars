@@ -7,6 +7,7 @@ LABEL name="Hackathon"
 LABEL vendor="Base"
 
 RUN pip install flask
+RUN pip install pymongo
 ADD code /code
 RUN chmod 777 -R /code
 
