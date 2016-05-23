@@ -20,9 +20,12 @@ def hello():
     return render_template('hello.html')
 
 @app.route("/f")
-def fetures():
+def features():
     return render_template('f.html')
 
+@app.route("/api/")
+def api():
+    return render_template('api.html')
 
 
 '''
@@ -42,20 +45,17 @@ def item():
 		Adding item to the db
 		'''
 		#Setting up the item test with http POST localhost:5000/api/item
-		#
-		# As now we dont recive any data from the client we use the data that is generated
-		item = {"name":"mattias","text":"En massa bra text", "tags": ["matte","mattias"] }
-		   
-		#Chossing where in db and colelction items
+		item = request.json
+		returnJSON = str(item).replace("'", '"')
 		item_store = db.items
-		#Saving the data and retrving the id
+		#Saving the data and retrieving the id
 		item_id = item_store.insert_one(item).inserted_id
-		#returning the id to the client make it a string from object
-		return str(item_id) 
+		#return str(item_id)
+		#For now: Return the original JSON to the client for testing purposes
+		return(returnJSON)
 
 	else:
-		#Getting all te items from the db test with http GET localhost:5000/api/item
-
+		#Getting all the items from the db test with http GET localhost:5000/api/item
 		#String to hold the items and display
 		items_returnd =""
 

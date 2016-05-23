@@ -18,6 +18,8 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
@@ -25,7 +27,39 @@
 <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
 
+    <script>
+      function getJSONFromMyForm () {
+        var myForm = $(document.myForm).serializeArray();
+        var myFormObject = {};
+        $.each(myForm,
+          function(i, v) {
+              myFormObject[v.name] = v.value;
+          });
+        return JSON.stringify(myFormObject);
+      }
 
+      $(function(){
+        // Post json to server
+        $('.post').click(function(){
+          $.ajax({
+            type: 'POST',
+            // Provide correct Content-Type, so that Flask will know how to process it.
+            contentType: 'application/json',
+            // Encode data as JSON.
+            data: getJSONFromMyForm(),
+            // This is the type of data expected back from the server.
+            dataType: 'json',
+            url: '/api/item',
+            success: function (ret) {
+              alert('JSON posted and later returned: ' + JSON.stringify(ret));
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(errorThrown);
+            }
+          });
+        });
+      });
+    </script>
 </head>
 
 
@@ -50,26 +84,20 @@
             </div>
           </div>
 
-
-
-
-
-
           {# This is the content block where we add content from other templaes like f.html #}
           {% block content %}
           <div class="inner cover">
-            <h1 class="cover-heading">Im fast, secure, small and and now what you like !</h1>
-            <p class="lead">This is a python app using flask-webframework and mongodb.</p>
-            <p class="lead">
-              <a href="/api" class="btn btn-lg btn-default">Discover the API</a>
+            <h1 class="cover-heading">API</h1>
+            <p class="lead">Here we send in the additional equipment as a JSON to the recomendation Database</p>
+            <p>
+            <form id="myForm" name="myForm">
+              <input type="text" name="name">
+              <input type="text" name="age">
+            </form>
+              <button class="btn btn-lg btn-default post">Post Json!</button>
             </p>
           </div>
           {% endblock %}
-
-
-
-
-
 
           <div class="mastfoot">
             <div class="inner">
