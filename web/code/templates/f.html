@@ -1,11 +1,17 @@
 {# This get all content from the main templae hello.html#}
 {% extends "hello.html" %}
 
-
+          {% block menucontent %}
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/api/">API</a></li>
+                  <li class="active"><a href="/f">Features</a></li>
+          {% endblock %}
 
 {# We replace the content block with this content #}
-{% block content %}
+{% block maincontent %}
   <h1>Index</h1>
   <p class="important">
     Welcome on my awesome homepage.
+{% endblock %}
+{% block mastfoot %}
 {% endblock %}

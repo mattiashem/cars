@@ -1,35 +1,10 @@
-<!doctype html>
+{% extends "hello.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-
-
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-
-<!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
-
+{% block headnodecontent %}
     <script>
-      function getJSONFromMyForm () {
-        var myForm = $(document.myForm).serializeArray();
+      function getJSONFromMyForm(collectionName) {
+        formName = 'form' + collectionName;
+        var myForm = $(document[formName]).serializeArray();
         var myFormObject = {};
         $.each(myForm,
           function(i, v) {
@@ -46,75 +21,57 @@
             // Provide correct Content-Type, so that Flask will know how to process it.
             contentType: 'application/json',
             // Encode data as JSON.
-            data: getJSONFromMyForm(),
+            data: getJSONFromMyForm(this.value),
             // This is the type of data expected back from the server.
             dataType: 'json',
-            url: '/api/item',
+            url: '/api/' + this.value,
             success: function (ret) {
-              alert('JSON posted and later returned: ' + JSON.stringify(ret));
+              $('#jsonresponse').val(JSON.stringify(ret));
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert(errorThrown);
+            $('#jsonresponse').val(errorThrown);
             }
           });
         });
       });
     </script>
-</head>
+{% endblock %}
 
 
-<body>
-
-    <div class="site-wrapper">
-
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">Made at Fareoffice</h3>
-              <nav>
-                <ul class="nav masthead-nav">
-                  <li class="active"><a href="/">Home</a></li>
-                  <li><a href="/api/">API</a></li>
-                  <li><a href="/f">Fetures</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          {% block menucontent %}
+                  <li><a href="/">Home</a></li>
+                  <li class="active"><a href="/api/">API</a></li>
+                  <li><a href="/f">Features</a></li>
+          {% endblock %}
 
           {# This is the content block where we add content from other templaes like f.html #}
-          {% block content %}
+          {% block maincontent %}
           <div class="inner cover">
             <h1 class="cover-heading">API</h1>
-            <p class="lead">Here we send in the additional equipment as a JSON to the recomendation Database</p>
+
+            <h2 class="cover-heading">Item</h2>
             <p>
-            <form id="myForm" name="myForm">
-              <input type="text" name="name">
-              <input type="text" name="age">
+            <form id="formitem" name="formitem">
+              OTA equipment code: <input type="text" name="ota" class="form-control">
+              Pickup date: <input type="text" name="date" class="form-control">
+              <textarea class="form-control" id="jsonresponse" name="jsonresponse"></textarea>
             </form>
-              <button class="btn btn-lg btn-default post">Post Json!</button>
+              <p>
+                <button class="btn btn-lg btn-default post" value="item">Store to DB</button> <a href="/api/item">List Items</a>
+              </p>
+            </p>
+
+            <h2 class="cover-heading">OtaEquipment</h2>
+            <p>
+            <form id="formotaequipment" name="formotaequipment">
+              Description: <input type="text" name="description" class="form-control">
+              OTA equipment code: <input type="text" name="ota" class="form-control">
+            </form>
+              <button class="btn btn-lg btn-default post" value="otaequipment">Store to DB</button> <a href="/api/otaequipment">List Ota Equipment</a>
             </p>
           </div>
           {% endblock %}
+          {% block mastfoot %}
+          {% endblock %}
 
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Im fast,secure,small and mean.  I am  <a href="http://madeatfareoffice">Made At Fareoffice</a>, by Jonas Eriksson and Mattias Hemmingsson</p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-  </body>
-</html>
+        

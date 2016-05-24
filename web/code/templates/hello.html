@@ -18,6 +18,8 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
@@ -25,7 +27,8 @@
 <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
 
-
+{% block headnodecontent %}
+{% endblock %}
 </head>
 
 
@@ -42,21 +45,17 @@
               <h3 class="masthead-brand">Made at Fareoffice</h3>
               <nav>
                 <ul class="nav masthead-nav">
+            {% block menucontent %}
                   <li class="active"><a href="/">Home</a></li>
                   <li><a href="/api/">API</a></li>
-                  <li><a href="/f">Fetures</a></li>
+                  <li><a href="/f">Features</a></li>
+            {% endblock %}
                 </ul>
               </nav>
             </div>
           </div>
 
-
-
-
-
-
-          {# This is the content block where we add content from other templaes like f.html #}
-          {% block content %}
+          {% block maincontent %}
           <div class="inner cover">
             <h1 class="cover-heading">Im fast, secure, small and and now what you like !</h1>
             <p class="lead">This is a python app using flask-webframework and mongodb.</p>
@@ -66,16 +65,13 @@
           </div>
           {% endblock %}
 
-
-
-
-
-
+          {% block mastfoot %}
           <div class="mastfoot">
             <div class="inner">
               <p>Im fast,secure,small and mean.  I am  <a href="http://madeatfareoffice">Made At Fareoffice</a>, by Jonas Eriksson and Mattias Hemmingsson</p>
             </div>
           </div>
+          {% endblock %}
 
         </div>
 

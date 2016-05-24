@@ -27,47 +27,59 @@ def features():
 def api():
     return render_template('api.html')
 
-
-'''
-API this route handle the API Calls. Here we get the correct url example /api/item/ we check what kind of reqest and issues the correct function aginst the db
-'''
 @app.route("/api/item" ,methods=['GET', 'POST'])
 def item():
-	'''
-	If reqest is post we add the item to the db
-	If the request is get we show all the items in the db
-
-	Here we dont use and templates only clean json text
-
-	'''
 	if request.method == 'POST':
-		'''
-		Adding item to the db
-		'''
-		#Setting up the item test with http POST localhost:5000/api/item
-		item = request.json
-		returnJSON = str(item).replace("'", '"')
-		item_store = db.items
-		#Saving the data and retrieving the id
-		item_id = item_store.insert_one(item).inserted_id
-		#return str(item_id)
-		#For now: Return the original JSON to the client for testing purposes
-		return(returnJSON)
-
+		return storeItem()
 	else:
-		#Getting all the items from the db test with http GET localhost:5000/api/item
-		#String to hold the items and display
-		items_returnd =""
+		return getItems()
 
-		#Chossing where in db and colelction items
-		item_store = db.items
-		#Retriving all the docs
-		items = item_store.find()
-		for item in items:
-			items_returnd += str(item)+","
+@app.route("/api/otaequipment" ,methods=['GET', 'POST'])
+def otaequipment():
+	if request.method == 'POST':
+		return storeOtaEquipment()
+	else:
+		return getOtaEquipment()
 
+@app.route("/api/drop/otaequipment" ,methods=['GET'])
+def dropotaequipment():
+	db.otaequipments.drop()
+	return 'dropped otaequipments'
 
-		return items_returnd
+@app.route("/api/drop/item" ,methods=['GET'])
+def dropitem():
+	db.items.drop()
+	return 'dropped items'
+
+def store(aCollectionString):
+	thing = request.json
+	thing_id = db[aCollectionString].insert_one(thing).inserted_id
+	return str(thing_id)
+
+def storeOtaEquipment():
+	return store('otaequipments')
+
+def storeItem():
+	item = request.json
+	answer = '';
+	if db.otaequipments.find({'ota': item['ota']}).count() > 0:
+		answer = '{"id":"' + store('items') + '"}'
+	else:
+		answer = '{"error":"OTA Code not in our database"}'
+	return answer
+
+def get(aCollectionString):
+		things_returned =""
+		things = db[aCollectionString].find()
+		for thing in things:
+			things_returned += str(thing)+","
+		return things_returned
+
+def getItems():
+	return get('items')
+
+def getOtaEquipment():
+	return get('otaequipments')
 
 if __name__ == "__main__":
 	app.debug = True
