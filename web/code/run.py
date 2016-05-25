@@ -27,12 +27,12 @@ def features():
 def api():
     return render_template('api.html')
 
-@app.route("/api/item" ,methods=['GET', 'POST'])
-def item():
+@app.route("/api/action" ,methods=['GET', 'POST'])
+def action():
 	if request.method == 'POST':
-		return storeItem()
+		return storeAction()
 	else:
-		return getItems()
+		return getActions()
 
 @app.route("/api/otaequipment" ,methods=['GET', 'POST'])
 def otaequipment():
@@ -46,27 +46,15 @@ def dropotaequipment():
 	db.otaequipments.drop()
 	return 'dropped otaequipments'
 
-@app.route("/api/drop/item" ,methods=['GET'])
-def dropitem():
-	db.items.drop()
-	return 'dropped items'
+@app.route("/api/drop/action" ,methods=['GET'])
+def dropaction():
+	db.actions.drop()
+	return 'dropped actions'
 
 def store(aCollectionString):
 	thing = request.json
 	thing_id = db[aCollectionString].insert_one(thing).inserted_id
 	return str(thing_id)
-
-def storeOtaEquipment():
-	return store('otaequipments')
-
-def storeItem():
-	item = request.json
-	answer = '';
-	if db.otaequipments.find({'ota': item['ota']}).count() > 0:
-		answer = '{"id":"' + store('items') + '"}'
-	else:
-		answer = '{"error":"OTA Code not in our database"}'
-	return answer
 
 def get(aCollectionString):
 		things_returned =""
@@ -75,8 +63,20 @@ def get(aCollectionString):
 			things_returned += str(thing)+","
 		return things_returned
 
-def getItems():
-	return get('items')
+def storeOtaEquipment():
+	return store('otaequipments')
+
+def storeAction():
+	action = request.json
+	answer = '';
+	if db.otaequipments.find({'ota': action['ota']}).count() > 0:
+		answer = '{"id":"' + store('actions') + '"}'
+	else:
+		answer = '{"error":"OTA Code not in our database"}'
+	return answer
+
+def getActions():
+	return get('actions')
 
 def getOtaEquipment():
 	return get('otaequipments')

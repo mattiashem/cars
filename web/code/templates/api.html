@@ -41,26 +41,24 @@
           {% block menucontent %}
                   <li><a href="/">Home</a></li>
                   <li class="active"><a href="/api/">API</a></li>
-                  <li><a href="/f">Features</a></li>
           {% endblock %}
 
-          {# This is the content block where we add content from other templaes like f.html #}
           {% block maincontent %}
           <div class="inner cover">
             <h1 class="cover-heading">API</h1>
 
-            <h2 class="cover-heading">Item</h2>
+            <h2 class="cover-heading">Action</h2>
             <p>
-            <form id="formitem" name="formitem">
+            <form id="formaction" name="formaction">
               OTA equipment code: <input type="text" name="ota" class="form-control">
               Pickup date: <input type="text" name="date" class="form-control">
-              <textarea class="form-control" id="jsonresponse" name="jsonresponse"></textarea>
             </form>
+            <textarea class="form-control" id="jsonresponse" name="jsonresponse"></textarea>
               <p>
-                <button class="btn btn-lg btn-default post" value="item">Store to DB</button> <a href="/api/item">List Items</a>
+                <button class="btn btn-lg btn-default post" value="action">Store to DB</button> <a href="/api/action">List actions</a>
               </p>
             </p>
-
+            <!--
             <h2 class="cover-heading">OtaEquipment</h2>
             <p>
             <form id="formotaequipment" name="formotaequipment">
@@ -69,6 +67,7 @@
             </form>
               <button class="btn btn-lg btn-default post" value="otaequipment">Store to DB</button> <a href="/api/otaequipment">List Ota Equipment</a>
             </p>
+            -->
           </div>
           {% endblock %}
           {% block mastfoot %}
