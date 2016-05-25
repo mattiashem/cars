@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template
 from flask import request,make_response, redirect
 from pymongo import MongoClient
+from datetime import datetime, timedelta
+import calendar
 
 
 app = Flask(__name__)
@@ -41,6 +43,20 @@ def otaequipment():
 	else:
 		return getOtaEquipment()
 
+@app.route("/api/recommend/<year>/<month>" ,methods=['GET', 'POST'])
+def recommend(year, month):
+	if len(year) == 4 and year.isdigit() and len(month) < 3 and month.isdigit():
+		things = db.actions.find({
+    		'date': {	
+        		'$gte': datetime(int(year),int(month),1,0,0,0,0),
+        		'$lt': datetime(int(year),int(month),calendar.monthrange(int(year), int(month))[1],0,0,0,0) 
+    		}
+		})
+		things_returned =""
+		for thing in things:
+			things_returned += str(thing)+","
+		return things_returned
+
 @app.route("/api/drop/otaequipment" ,methods=['GET'])
 def dropotaequipment():
 	db.otaequipments.drop()
@@ -69,6 +85,7 @@ def storeOtaEquipment():
 def storeAction():
 	action = request.json
 	answer = '';
+	action['date'] = datetime.strptime(action['date'] + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
 	if db.otaequipments.find({'ota': action['ota']}).count() > 0:
 		answer = '{"id":"' + store('actions') + '"}'
 	else:
