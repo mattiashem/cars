@@ -16,13 +16,12 @@
       $(function(){
         // Post json to server
         $('.post').click(function(){
+          jsonData = getJSONFromMyForm(this.value)
+          $('#jsonrequest').val(jsonData);
           $.ajax({
             type: 'POST',
-            // Provide correct Content-Type, so that Flask will know how to process it.
             contentType: 'application/json',
-            // Encode data as JSON.
-            data: getJSONFromMyForm(this.value),
-            // This is the type of data expected back from the server.
+            data: jsonData,
             dataType: 'json',
             url: '/api/' + this.value,
             success: function (ret) {
@@ -70,6 +69,7 @@
                 <div class="form-group">
               <label for="date" >Pickup date:</label>
               <input type="text" name="date" class="form-control"/>
+              </form>
                 </div>
 
 
@@ -80,7 +80,7 @@
                  </div>
 
 
-              </form>
+
 
                   </div>
           <div class="col-md-6">
@@ -95,7 +95,7 @@
 
                             <div class="form-group">
                   <label for="ota">Request: </label>
-              <textarea class="form-control" id="jsonresponse" name="jsonresponse"></textarea>
+              <textarea class="form-control" id="jsonrequest" name="jsonrequest"></textarea>
                  </div>
               </div>
 
