@@ -1,17 +1,17 @@
 web1:
-  build:cars/.
+  build: cars
   links:
     - db
   ports:
     - "5000:5000"
   volumes:
-   - "./cars/code:/code"
-#lb:
-#  build: lb
-#  ports:
-#    - "80:80"
-#    - "443:443"
-#  links:
-#    - web1
+    - "./cars/code:/code"
+lb:
+  build: cars-lb
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - web1
 db:
   image: mongo
