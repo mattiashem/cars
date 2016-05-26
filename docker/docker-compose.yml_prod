@@ -1,0 +1,30 @@
+web1:
+  image: mattiashem/cars
+  links:
+    - db
+web2:
+  image: mattiashem/cars
+  links:
+    - db
+web3:
+  image: mattiashem/cars
+  links:
+    - db
+web4:
+  image: mattiashem/cars
+  links:
+    - db
+lb:
+  image: mattiashem/cars-lb
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - web1
+    - web2
+    - web3
+    - web4
+  volumes:
+   - "./tls:/etc/nginx/tls"
+db:
+  image: mongo
