@@ -1,11 +1,11 @@
 web1:
-  build: web
+  build:cars/.
   links:
     - db
   ports:
     - "5000:5000"
   volumes:
-   - "./web/code:/code"
+   - "./cars/code:/code"
 #lb:
 #  build: lb
 #  ports:
