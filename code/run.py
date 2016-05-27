@@ -93,7 +93,7 @@ def storeAction():
 		else:
 			answer = '{"error":"OTA Code not in our database"}'
 	except ValueError:
-			answer ='{"error":"Value error"}'
+			answer ='{"error":"Value error :) "}'
 	return answer
 
 def getActions():
